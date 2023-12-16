@@ -1,0 +1,92 @@
+{%load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static "main.css" %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<title>Auction</title>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="gitam-logo">
+            <div class="logo">
+                <img src="" width="40%">
+            </div>
+            <i class='bx bx-menu' id="btn"></i>
+            </div>
+        <ul style="list-style-type:none;" class="navlist" >
+            <li>
+                <a href="{% url "search" %}">
+                    <i class='bx bx-search-alt-2'></i>
+                    <span class="list_names">Search</span>
+                </a>
+                </li>
+            {%if x%}
+            <li>
+            <a href="{%url "add" %}">
+                <i class='bx bx-add-to-queue'></i>
+                <span class="list_names">Add Item</span>
+            </a>
+            </li>
+            <li>
+                <a href="{%url 'delete' %}">
+                    <i class='bx bx-folder-minus'></i>
+                    <span class="list_names">Delete Item</span>
+                    </a>
+            </li>
+            {%endif%}
+            <li>
+                <a href="{% url "logout" %}">
+                    <i class='bx bx-log-out'></i>
+                    <span class="list_names">Logout</span>
+                </a>
+                    
+                
+            </li>
+        </ul>
+    </div>
+    <div class="nav">
+            <h3>Auction</h3>
+        <ul class="left">
+            <li><h3>{{user|title}}</h3></li>
+        </ul>
+    </div>
+    
+    <div class="container">
+            <div class="col">
+                {%for e in items %}
+                <a href="{%url "detail" e.slug%}">
+                <div class="card">
+                    <img  class="linkimg" src="{{e.image.url}}" alt="">
+                    <h3>{{e.title|title}}
+                    <h4>{{e.highest}}</h4>
+                    <h5>{{e.bid}}<h5>
+                    <!-- <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Est incidunt laboriosam obcaecati labore impedit. Ea est voluptatem maiores neque velit tempore ipsum maxime vel repellat, iusto ab nulla sunt! Sapiente?</p> -->
+                </div>
+            </a>
+                {%endfor%}
+            </div>
+    </div>
+    <script>
+        let btn = document.querySelector("#btn");
+        let sidebar = document.querySelector(".sidebar");
+        let cards = document.querySelectorAll(".card")
+    btn.onclick=function()
+    {
+        sidebar.classList.toggle("active");
+        cards.forEach((card) => {
+            card.classList.toggle("hover");
+          });
+    }
+    </script>
+    
+</body>
+</html>

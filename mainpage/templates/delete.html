@@ -1,0 +1,33 @@
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{%static 'main.css' %}">
+    <title>Delete</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="{%url 'all' %}"><h3>Auction</h3></a>
+    <ul>
+        <li></li>
+        <a href="{%url 'logout' %}"><li><h3>Logout</h3></li></a>
+    </ul>
+</div>
+    <div class="container">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {%for field in form%}
+        <div class="form-control">
+            {{field.label_tag}}
+            {{field}}
+        </div>
+        {%endfor%}
+        <a href="{%url 'all' %}"><button>Delete</button></a>
+    </form>
+    {%if value%}
+    <h3 style="text-align: center;">Item Deleted</h3>
+    {%endif%}
+    </div>
+</body>
+</html>
