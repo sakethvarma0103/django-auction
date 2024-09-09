@@ -5,6 +5,8 @@ from .forms import ReviewForm,ItemsForm,SearchForm,DeleteForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import user_passes_test
 from django.utils.text import slugify
+from datetime import timedelta
+from django.utils import timezone
 def user_is_admin(user):
     return user.is_authenticated and user.is_superuser
 
@@ -65,17 +67,24 @@ def add(request):
 
 @login_required
 def detail(request, slug):
+    time=timezone.now()
     book=get_object_or_404(Items,slug=slug)
+    bid=get_object_or_404(Bids,item=slug)
+    if time - bid.timestamp > timedelta(hours=3):
+        form=ReviewForm()
+        return render(request,"detail.html",{
+                "book":book,
+                "bids":bid,
+                "sold":True
+                })
     if request.method == 'POST':
         form=ReviewForm(request.POST)
         if form.is_valid():
-            bid=Bids()
             increment = form.cleaned_data['bid']
             if increment>0:
                 user = request.user 
                 if user==book.highest:
                     return redirect("all")
-                bid.item=book.slug
                 bid.name=user
                 if increment>book.bid:
                     book.bid=increment
@@ -92,7 +101,8 @@ def detail(request, slug):
     return render(request,"detail.html",{
         "book":book,
         "form":form,
-        "bids":bids
+        "bids":bids,
+        "sold":False
     })
 
 @user_passes_test(user_is_admin)
